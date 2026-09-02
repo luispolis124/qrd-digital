@@ -1,0 +1,14 @@
+{
+    "big-buck-bunny": {
+        "titulo": "Big Buck Bunny (Animation Special)",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    "sintel-project": {
+        "titulo": "Sintel (Open Movie Project)",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+    },
+    "elephants-dream": {
+        "titulo": "Elephant's Dream (Classic Open Movie)",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    }
+}
