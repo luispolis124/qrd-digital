@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>QRD // Carregando Cartucho...</title>
+    <style>
+        body {
+            background-color: #0b0b0e;
+            color: #a0a0b0;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loading-box {
+            text-align: center;
+        }
+        h2 {
+            color: #00ffcc;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-box">
+        <h2>QRD // LENDO CARTUCHO</h2>
+        <p id="statusMsg">Buscando dados na fita magnética...</p>
+    </div>
+
+    <script>
+        async function resolverRotaCatalogo() {
+            try {
+                // Pega o caminho da URL (ex: /qrd-digital/filmea vira "filmea")
+                const caminho = window.location.pathname.toLowerCase();
+                
+                // Extrai o trecho do filme da URL (se for /qrd-digital/filmea, pega "filmea")
+                const partes = caminho.split('/').filter(Boolean);
+                // O nome do repositório é qrd-digital, então o slug do filme geralmente é o último item
+                const slugUrl = partes[partes.length - 1] || '';
+
+                const statusMsg = document.getElementById('statusMsg');
+                statusMsg.innerText = `Lendo índice para: "${slugUrl}"...`;
+
+                // Faz o fetch do seu catalogo.json na raiz do site
+                // (Usamos o caminho absoluto ou relativo dependendo de onde o GitHub Pages está)
+                const resposta = await fetch('/qrd-digital/catalogo.json');
+                
+                if (!resposta.ok) {
+                    throw new Error('Não foi possível ler o catalogo.json');
+                }
+
+                const catalogo = await resposta.json();
+
+                // Procura no JSON se existe alguma chave que corresponda à URL digitada
+                // Exemplo: se o JSON tem a chave "filmea", ou se a slug bate
+                if (catalogo[slugUrl]) {
+                    window.location.replace(`/qrd-digital/index.html?id=${slugUrl}`);
+                    return;
+                }
+
+                // Verificação alternativa: percorre as chaves procurando correspondência parcial
+                let idEncontrado = null;
+                for (const chave in catalogo) {
+                    if (slugUrl.includes(chave) || chave.includes(slugUrl)) {
+                        idEncontrado = chave;
+                        break;
+                    }
+                }
+
+                if (idEncontrado) {
+                    window.location.replace(`/qrd-digital/index.html?id=${idEncontrado}`);
+                } else {
+                    // Se não achar nada no catálogo, joga para um padrão ou aviso
+                    statusMsg.innerText = "Cartucho não encontrado na prateleira. Redirecionando...";
+                    setTimeout(() => {
+                        window.location.replace('/qrd-digital/index.html');
+                    }, 1500);
+                }
+
+            } catch (erro) {
+                console.error("Erro no roteamento:", erro);
+                document.getElementById('statusMsg').innerText = "Erro de leitura no estojo. Abrindo padrão...";
+                setTimeout(() => {
+                    window.location.replace('/qrd-digital/index.html');
+                }, 1500);
+            }
+        }
+
+        resolverRotaCatalogo();
+    </script>
+</body>
+</html>
