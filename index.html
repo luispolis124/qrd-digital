@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRD // Plataforma de Mídia Digital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">QRD // DIGITAL MEDIA</div>
+            <div id="statusBadge" class="status-badge">Verificando Cartucho...</div>
+        </header>
+
+        <!-- Informações do Filme/Cartucho atual -->
+        <div class="cart-info-header">
+            <h2 id="cartTitle">Carregando Título...</h2>
+            <span id="cartIdDisplay" class="cart-id-tag">ID: --</span>
+        </div>
+
+        <div id="playerContainer" class="player-screen">
+            <!-- Conteúdo injetado via JavaScript -->
+        </div>
+
+        <div class="info-panel">
+            <div class="info-row">
+                <span class="info-label">Status da Locação:</span>
+                <span id="locacaoStatus" class="info-value">Verificando...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Prazo Restante:</span>
+                <span id="timeRemaining" class="info-value">--</span>
+            </div>
+        </div>
+
+        <!-- Botão de "Devolução" simulada -->
+        <div class="action-footer">
+            <button id="btnDevolver" class="btn-devolver" onclick="devolverCartucho()">Devolver Cartucho à Prateleira</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
