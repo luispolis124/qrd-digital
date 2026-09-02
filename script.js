@@ -15,7 +15,7 @@ async function carregarSistemaQRD() {
         // Faz a requisição para ler o arquivo catalogo.json
         const resposta = await fetch('catalogo.json');
         if (!resposta.ok) {
-            throw new Error('Não foi possível carregar o catálogo de filmes.');
+            throw new Error(`Erro HTTP! Status: ${resposta.status}`);
         }
         
         const catalogoQRD = await resposta.json();
@@ -35,11 +35,12 @@ async function carregarSistemaQRD() {
 
     } catch (erro) {
         console.error("Erro ao carregar o QRD:", erro);
-        document.getElementById('cartTitle').innerText = "Erro no Sistema";
+        document.getElementById('cartTitle').innerText = "Erro no Servidor Local";
         document.getElementById('playerContainer').innerHTML = `
             <div class="expired-message">
                 <h2>FALHA DE CARREGAMENTO</h2>
-                <p>Não foi possível ler o banco de dados dos cartuchos.</p>
+                <p>Se você abriu o arquivo direto do PC (file://), o navegador bloqueia o JSON.</p>
+                <p>Dica: Use um servidor local (como a extensão Live Server do VS Code) ou suba para o GitHub Pages.</p>
             </div>
         `;
     }
@@ -71,8 +72,9 @@ function iniciarLogicaLocacao(filmeAtual) {
         statusBadge.classList.add('active');
         locacaoStatus.innerText = "Cartucho em uso (Locado)";
 
+        // Adicionado 'muted' e 'playsinline' para garantir que o autoplay funcione sem travar no mobile ou PC
         playerContainer.innerHTML = `
-            <video controls autoplay>
+            <video controls autoplay muted playsinline>
                 <source src="${filmeAtual.videoUrl}" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
             </video>
